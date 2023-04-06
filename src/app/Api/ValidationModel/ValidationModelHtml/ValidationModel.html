@@ -1,0 +1,39 @@
+<div>
+  <div [style.display]="typeFilters !== 'String' ? 'none':'grid'">
+    <mat-form-field>
+      <input matInput placeholder="Значение" [(ngModel)]="stringValue" [formControl]="$any(FormGroup.get('String'))" />
+    </mat-form-field>
+  </div>
+  <div [style.display]="typeFilters !== 'Integer' ? 'none':'grid'">
+    <mat-form-field>
+      <input matInput placeholder="Значение" type="number" [(ngModel)]="integerValue"
+        [formControl]="$any(FormGroup.get('Integer'))" />
+    </mat-form-field>
+  </div>
+  <div [style.display]="typeFilters !== 'Binary' ? 'none':'grid'">
+    <mat-form-field>
+      <input matInput placeholder="Значение" [(ngModel)]="binaryValue" [formControl]="$any(FormGroup.get('Binary'))" />
+    </mat-form-field>
+  </div>
+  <div [style.display]="typeFilters !== 'Time' ? 'none':'grid'">
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Выбор даты" [formControl]="$any(FormGroup.get('Time'))"
+        [(ngModel)]="timeValue">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div [style.display]="typeFilters !== 'Boolean' ? 'none':'grid'">
+    <mat-checkbox [formControl]="$any(FormGroup.get('Boolean'))" placeholder="Значение" [(ngModel)]="booleanValue">
+    </mat-checkbox>
+  </div>
+  <div [style.display]="typeFilters !== 'LongLong' ? 'none':'grid'">
+    <mat-form-field>
+      <input matInput placeholder="Значение" type="number" [(ngModel)]="longLongValue"
+        [formControl]="$any(FormGroup.get('LongLong'))" />
+    </mat-form-field>
+  </div>
+  <div [style.display]="typeFilters !=='Params' ? 'none':'grid'">
+    <label>По данному параметру отсутствует фильтр!</label>
+  </div>
+</div>

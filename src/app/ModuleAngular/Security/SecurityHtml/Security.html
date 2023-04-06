@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="row justify-content-center align-self-center">
+    <div class="col-4">
+      <div class="center-block justify-content-center align-self-center">
+        <form class="form-signin">
+          <h3 class="h3 mt-5 mb-3 font-weight-normal text-primary">АВТОРИЗАЦИЯ</h3>
+          <input type="login" id="inputEmail" class=" mt-1 form-control text-primary" placeholder="Логин" required
+            autofocus [(ngModel)]="authService.user.loginField" [ngModelOptions]="{standalone: true}">
+          <label [style.display]="authService.user.isErrorField ? 'inline':'none'"
+            class="colorText mt-2 mb-3">{{authService.user.errorMessageField}}</label>
+          <input type="password" id="inputPassword" class=" mt-2 form-control text-primary" placeholder="Пароль"
+            required [(ngModel)]="authService.user.passwordField" [ngModelOptions]="{standalone: true}">
+          <button class=" mt-2 btn btn-lg btn-primary btn-block w-100" type="submit"
+            [style.display]="authService.IsVisibleButton ? 'none':'block'" (click)="login()">Войти</button>
+          <button class="mt-2 btn btn-lg btn-primary btn-block w-100" type="submit"
+            [style.display]="authService.IsVisibleButton ? 'block':'none'" (click)="authService.logout()">Выйти</button>
+          <p class="mt-2 mb-3 text-primary">&copy; 2023</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

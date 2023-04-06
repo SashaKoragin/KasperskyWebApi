@@ -1,0 +1,230 @@
+<h1>Модель генерации схемы для POST запроса!</h1>
+<div class="head">
+  <div class="row">
+    <div class="col columnCount">
+      <b class="text">Выбор схемы представления:</b>
+      <mat-form-field class="select_sql">
+        <mat-label class="text-primary">Представление</mat-label>
+        <mat-select [(ngModel)]="getPostModel.model.SchemeModel"
+          (ngModelChange)="selectModelMethodModel(getPostModel.model.SchemeModel)" [formControl]="modelSchemeModelCtrl"
+          #singleSelectSchemeModel name="NameSchemeView">
+          <mat-option>
+            <ngx-mat-select-search [formControl]="modelSchemeModelFilterCtrl">
+            </ngx-mat-select-search>
+          </mat-option>
+          <mat-option matTooltip={{model.InfoSchemeView}} *ngFor="let model of modelSchemeModelFilter | async"
+            [value]="model">
+            <p>{{model.NameSchemeView}}</p>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <b class="text">Количество данных в выборке:</b>
+      <mat-form-field>
+        <input matInput placeholder="Количество" type="number" [ngModel]="getPostModel.model.Model.CountDataBase"
+          [formControl]="countRow" min="0" (ngModelChange)="getPostModel.model.Model.CountDataBase = $event" />
+        <mat-label class="labelError" *ngIf="countRow.invalid">Не введено количество!</mat-label>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col columnCount">
+      <p class="text">
+        {{getPostModel.model.SchemeModel.InfoSchemeView}}
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col column borders">
+      <Label>Колонки</Label>
+    </div>
+    <div class="col borders">
+      <label>Создание выборки</label>
+    </div>
+    <div class="w-100"></div>
+    <div class="col column borders scroll">
+      <div *ngFor="let model of getPostModel.model.Model.MemoView">
+        <div class="row">
+          <div class="col max borders">
+            <mat-checkbox [(ngModel)]="model.IsVisible"></mat-checkbox>
+          </div>
+          <div class="col borders">
+            <label matTooltip={{model.Description}}>{{model.Memo}}</label>
+          </div>
+          <div class="col borders">
+            <label>{{model.Description}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col borders scroll">
+      <button mat-icon-button [matMenuTriggerFor]="menu" color="accent" matTooltip="Добавить условие">
+        <mat-icon>add</mat-icon>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="addRoot(true,'Условие - И')">
+            <mat-icon>input</mat-icon>
+            И
+          </button>
+          <button mat-menu-item (click)="addRoot(false,'Условие - ИЛИ')">
+            <mat-icon>input</mat-icon>
+            ИЛИ
+          </button>
+        </mat-menu>
+      </button>
+      <button mat-icon-button (click)="generateDataToStringModel()" color="accent" matTooltip="Сгенерировать модель!"
+        [disabled]="countRow.invalid">
+        <mat-icon>build</mat-icon>
+      </button>
+      <button mat-icon-button (click)="generateFilters()" color="accent" matTooltip="Проверить выборку!"
+        [disabled]="countRow.invalid">
+        <mat-icon>reply</mat-icon>
+      </button>
+      <button mat-icon-button (click)="postViewKaspersky()" color="accent" matTooltip="Тест запроса console!"
+        [disabled]="countRow.invalid">
+        <mat-icon>send</mat-icon>
+      </button>
+      <button mat-icon-button (click)="reportServerKaspersky()" color="accent" matTooltip="Импорт Excel"
+        [disabled]="countRow.invalid">
+        <mat-icon>import_export</mat-icon>
+      </button>
+      <button mat-icon-button (click)="clearAll()" color="accent" matTooltip="Очистить выборку!">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <div class="TreeModel">
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+          <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+            <div class="menuDiv">
+              <button mat-icon-button [matMenuTriggerFor]="menu" color="primary">
+                <mat-icon>add</mat-icon>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="addChildRoot(node,true,'Условие - И')">
+                    <mat-icon>input</mat-icon>
+                    И
+                  </button>
+                  <button mat-menu-item (click)="addChildRoot(node,false,'Условие - ИЛИ')">
+                    <mat-icon>input</mat-icon>
+                    ИЛИ
+                  </button>
+                </mat-menu>
+              </button>
+              <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.item">
+                <mat-icon class="mat-icon-rtl-mirror">
+                  {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                </mat-icon>
+              </button>
+              <label class="l">{{node.item.NameCondition}}</label>
+              <button mat-icon-button (click)="addRootChild(node)" class="Add" matTooltip="Добавить параметр">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+            <div [style.display]="treeControl.isExpanded(node) ? 'contents' : 'none'">
+              <table class="table table-striped" [style.display]="node.item.MemoView.length > 0 ? 'contents' : 'none'">
+                <tr>
+                  <th class="id1">Столбец</th>
+                  <th class="id1">Описание</th>
+                  <th class="id3">Тип фильтра</th>
+                  <th class="id4">Значение</th>
+                  <th class="id5">Признак</th>
+                  <th class="id6">Логика</th>
+                </tr>
+                <tbody>
+                  <tr *ngFor="let memoElement of node.item.MemoView">
+                    <th class="border">
+                      <Label class="l" [style.display]="memoElement?.ModelIsEdit ? 'none':'inline'"
+                        [matTooltip]="memoElement?.Memo">{{memoElement?.Memo}}</Label>
+                      <mat-form-field [style.display]="!memoElement?.ModelIsEdit ? 'none':'block'">
+                        <mat-label class="text-primary">Поля</mat-label>
+                        <mat-select [(ngModel)]="model" [placeholder]="model.Memo!" [formControl]="memoViewCtrl"
+                          #singleSelectMemoView name="memo">
+                          <mat-option>
+                            <ngx-mat-select-search [formControl]="memoViewFilterCtrl">
+                            </ngx-mat-select-search>
+                          </mat-option>
+                          <mat-option *ngFor="let memoView of filteredMemoView | async" [value]="memoView">
+                            {{memoView.Memo}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </th>
+                    <th class="border">
+                      <Label class="l" [style.display]="memoElement?.ModelIsEdit ? 'none':'inline'"
+                        [matTooltip]="memoElement?.Description">{{memoElement?.Description}}</Label>
+                      <mat-form-field [style.display]="!memoElement?.ModelIsEdit ? 'none':'block'">
+                        <input matInput placeholder="Описание" [disabled]="true" [ngModel]="model.Description"
+                          (ngModelChange)="model.Description = $event" />
+                      </mat-form-field>
+                    </th>
+                    <th class="border">
+                      <Label class="l" [style.display]="memoElement?.ModelIsEdit ? 'none':'inline'"
+                        [matTooltip]="memoElement?.FilterType?.FilterTypeText">{{memoElement?.FilterType?.FilterTypeText}}</Label>
+                      <mat-form-field [style.display]="!memoElement?.ModelIsEdit ? 'none':'block'">
+                        <mat-label class="text-primary">Фильтр</mat-label>
+                        <mat-select [placeholder]="model.FilterType?.FilterTypeText!" [(ngModel)]="model.FilterType"
+                          [formControl]="filterCtrl" #singleSelectFilterType name="FilterTypeText">
+                          <mat-option>
+                            <ngx-mat-select-search [formControl]="filterFilterCtrl">
+                            </ngx-mat-select-search>
+                          </mat-option>
+                          <mat-option *ngFor="let filtered of filteredFilter | async" [value]="filtered">
+                            {{filtered.FilterTypeText}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </th>
+                    <th class="border">
+                      <Label class="l" [style.display]="memoElement?.ModelIsEdit ? 'none':'inline'"
+                        [matTooltip]="memoElement?.ValueMemo">{{memoElement?.ValueMemo}}</Label>
+                      <templateValidators [style.display]="!memoElement?.ModelIsEdit ? 'none':'block'"
+                        [typeFilters]="model.TypeMemo" [inputValue]="model.ValueMemo"
+                        (onChangedBackParameter)="model.ValueMemo = $event"
+                        (isValidateMemo)="model.IsValidMemoModel = $event">
+                      </templateValidators>
+                    </th>
+                    <th class="border">
+                      <mat-checkbox [style.display]="memoElement?.ModelIsEdit ? 'none':'inline'"
+                        matTooltip="Признак НЕ-!" [disabled]="true" [(ngModel)]="memoElement.IsNot"></mat-checkbox>
+                      <mat-checkbox id="template" class="validation check"
+                        [style.display]="!memoElement?.ModelIsEdit ? 'none':'block'" [(ngModel)]="model.IsNot"
+                        matTooltip="Признак НЕ-!" [checked]="model.IsNot">
+                      </mat-checkbox>
+                    </th>
+                    <th class="border">
+                      <div class="setting">
+                        <button mat-icon-button *ngIf="!memoElement?.ModelIsEdit" color="accent"
+                          (click)="edit(memoElement)" [disabled]="isEdit">
+                          <i class="material-icons">edit</i>
+                        </button>
+                        <button mat-icon-button *ngIf="!memoElement?.ModelIsEdit" (click)="delete(node, memoElement)"
+                          [disabled]="isEdit">
+                          <i class="material-icons">delete</i>
+                        </button>
+                      </div>
+                      <div class="setting" *ngIf="memoElement?.ModelIsEdit">
+                        <button mat-icon-button type="submit" color="primary" focusable="false"
+                          [disabled]="model.IsValidMemoModel || filterCtrl.invalid" (click)="save(node, memoElement)">
+                          <i class="material-icons">check</i>
+                        </button>
+                        <button mat-icon-button color="primary" focusable="false" (click)="cancel(node, memoElement)">
+                          <i class="material-icons">cancel</i>
+                        </button>
+                      </div>
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </mat-tree-node>
+        </mat-tree>
+      </div>
+
+    </div>
+  </div>
+</div>
+<h1 class="model">Модель взаимодействия с сервисом касперским!</h1>
+<div [style.display]="buildString ===null ? 'none':'grid'" class="p-1 flex-row bd-highlight mb-0 procent100 card-block"
+  matTooltip="Модель взаимодействия с сервисом касперским!">
+  <div class="chat-body clearfix">
+    <p>
+      {{buildString}}
+    </p>
+  </div>
+</div>

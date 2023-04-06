@@ -1,0 +1,143 @@
+::ng-deep .mat-checkbox-layout {
+  margin-bottom: 0px !important;
+}
+
+::ng-deep .mat-tooltip {
+  position: relative;
+  left: -30px;
+  top: 10px;
+}
+
+.head {
+  display: grid;
+  grid-column-gap: 10px;
+  margin-bottom: 15px;
+  max-width: 90%;
+}
+
+.max {
+  max-width: max-content;
+}
+
+.column {
+  max-width: 40%;
+}
+
+.borders {
+  border: 2px ridge;
+  border-color: white;
+}
+
+.tree ul,
+.tree li {
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style-type: none;
+}
+
+mat-tree-node {
+  display: flow-root;
+}
+
+
+.border {
+  border: 2px ridge #24943A;
+  background-color: #D4EED1;
+  text-align: center;
+  font-family: Georgia, serif;
+
+}
+
+.scroll {
+  max-height: 600px;
+  overflow-y: scroll;
+}
+
+.labelError {
+  color: red;
+  font-size: 14px;
+}
+
+
+
+.id1,
+.id2,
+.id3,
+.id4,
+.id5 {
+  text-align: center;
+  width: 210px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border: groove;
+  color: rgba(0, 0, 0, .87);
+  background: #24943A;
+  font-family: 'Times New Roman';
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+.id6 {
+  text-align: center;
+  padding-left: 5px;
+  padding-right: 5px;
+  border: groove;
+  color: rgba(0, 0, 0, .87);
+  background: #24943A;
+  font-family: 'Times New Roman';
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.Add {
+  color: green;
+}
+
+
+.card-block {
+  overflow-x: auto;
+  height: 500px;
+  width: 100%;
+  background: white;
+}
+
+.setting {
+  display: flex;
+}
+
+.model {
+  font-size: 32px;
+  text-align: center;
+}
+
+.menuDiv {
+  display: flex;
+  align-items: center;
+}
+
+label {
+  color: white;
+}
+
+h1 {
+  color: white;
+}
+
+.l {
+  color: black;
+}
+
+.columnCount {
+  align-items: baseline;
+  font-size: 20px;
+
+}
+
+.text {
+  color: white;
+}
+
+.select_sql {
+  width: 350px;
+}

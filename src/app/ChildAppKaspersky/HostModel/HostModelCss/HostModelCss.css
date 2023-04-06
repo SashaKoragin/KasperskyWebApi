@@ -1,0 +1,97 @@
+::ng-deep table.mat-mdc-table {
+  background: cadetblue;
+}
+
+::ng-deep th.mat-mdc-header-cell {
+  text-align: center;
+  white-space: pre-wrap;
+  padding-left: 5px;
+  padding-right: 5px;
+  border: groove;
+  color: rgba(0, 0, 0, .87);
+  background: cadetblue;
+  font-family: 'Times New Roman';
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+
+::ng-deep td.mat-mdc-cell {
+  text-align: left;
+  white-space: nowrap;
+  padding-left: 5px;
+  padding-right: 5px;
+  border: groove;
+  background: darkkhaki;
+  font-family: 'Times New Roman';
+  font-size: 14px;
+  font-weight: bold;
+}
+
+
+.text {
+  color: white;
+}
+
+.paginator {
+  margin-bottom: 100px;
+}
+
+
+.search_blok {
+  width: 35%;
+}
+
+.search {
+  width: 80%;
+}
+
+label {
+  color: white;
+  font-size: 34px;
+  font-weight: bold;
+}
+
+table {
+  border: groove;
+  width: 70%;
+  table-layout: fixed;
+}
+
+
+.dev_name,
+.dev_descr,
+.dev_manuf,
+.BiosManuf,
+.BiosVersion,
+.BiosSerialNum,
+.BiosReleaseDate,
+.CpuSpeed,
+.CpuCores,
+.CpuThreads,
+.dev_xpar1,
+.dev_xpar2,
+.dev_xpar3,
+.StorageRotationRate,
+.SerialNum,
+.drv_ver,
+.drv_prov,
+.VideoCardMemorySize,
+.SoundCardCodec {
+  text-align: center;
+  width: 293px;
+  position: fixed;
+  padding-left: 5px;
+  padding-right: 5px;
+  border: groove;
+  color: rgba(0, 0, 0, .87);
+  background: cadetblue;
+  font-family: 'Times New Roman';
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.modelDriver {
+  max-width: 70%;
+}

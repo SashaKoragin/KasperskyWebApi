@@ -1,0 +1,536 @@
+<div class="mat-elevation-z8" [style.display]="isLoadForm ? 'none' : 'grid'">
+  <form class="search">
+    <mat-form-field class="search_blok">
+      <span matPrefix><i class="material-icons">youtube_searched_for</i></span>
+      <input matInput (keyup)="filtersTable($any($event.target).value)" placeholder="Поиск данных">
+    </mat-form-field>
+  </form>
+  <div class="tables" #TABLEALLHOSTKASPERSKY>
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="LOGIC">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Логика</th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox matTooltip="Характеристики" (click)="$event.stopPropagation();"
+            (change)="selectionRowModel.toggle(row);selectModelHost()" [checked]="selectionRowModel.isSelected(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="KLHST_WKS_DN">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Имя хоста</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.KLHST_WKS_DN">
+          {{row.KLHST_WKS_DN}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="KLHST_WKS_HOSTNAME">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Ключ хоста (Id)</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.KLHST_WKS_HOSTNAME">
+          {{row.KLHST_WKS_HOSTNAME}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="KLHST_INSTANCEID">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Id Агента</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.KLHST_INSTANCEID">
+          {{row.KLHST_INSTANCEID}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="KLHST_WKS_WINHOSTNAME">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Наименование хоста</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.KLHST_WKS_WINHOSTNAME">
+          {{row.KLHST_WKS_WINHOSTNAME}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="KLHST_WKS_WINDOMAIN">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Рабочая группа</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.KLHST_WKS_WINDOMAIN">
+          {{row.KLHST_WKS_WINDOMAIN}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="KLHST_WKS_DNSDOMAIN">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Домен</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.KLHST_WKS_DNSDOMAIN">
+          {{row.KLHST_WKS_DNSDOMAIN}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="KLHST_WKS_DNSNAME">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>DNSNAME</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.KLHST_WKS_DNSNAME">
+          {{row.KLHST_WKS_DNSNAME}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="KLHST_WKS_IP_LONG">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Ip Адрес</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.KLHST_WKS_IP_LONG">
+          {{row.KLHST_WKS_IP_LONG}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="KLHST_WKS_FQDN">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>FQDN</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.KLHST_WKS_FQDN">
+          {{row.KLHST_WKS_FQDN}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="KLHST_PRCST_PRODUCT_NAME">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Продукт</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.KLHST_PRCST_PRODUCT_NAME">
+          {{row.KLHST_PRCST_PRODUCT_NAME}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="KLHST_PRCST_PRODUCT_VERSION">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Версия</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.KLHST_PRCST_PRODUCT_VERSION">
+          {{row.KLHST_PRCST_PRODUCT_VERSION}}
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="disPlayColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: disPlayColumns;"></tr>
+    </table>
+  </div>
+  <mat-paginator class="paginator" #modelHost [pageSizeOptions]="[5, 10, 25, paginatorModelHost.length]"
+    showFirstLastButtons="true"></mat-paginator>
+
+  <div class="modelDriver" [style.display]="allModelDevice.isVisibleModel ? 'inline':'none'">
+
+    <label>{{allModelDevice.MotherBoardLabel}}</label>
+    <table mat-table [dataSource]="allModelDevice.dataSourceMotherBoard">
+
+      <ng-container matColumnDef="dev_name">
+        <th class="dev_name" mat-header-cell *matHeaderCellDef>Имя</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_name">
+          {{row.dev_name}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_descr">
+        <th class="dev_descr" mat-header-cell *matHeaderCellDef>Описание</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_descr">
+          {{row.dev_descr}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_manuf">
+        <th class="dev_manuf" mat-header-cell *matHeaderCellDef>Поставщик</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_manuf">
+          {{row.dev_manuf}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="BiosManuf">
+        <th class="BiosManuf" mat-header-cell *matHeaderCellDef>Поставщик BIOS</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.BiosManuf">
+          {{row.BiosManuf}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="BiosVersion">
+        <th class="BiosVersion" mat-header-cell *matHeaderCellDef>Версия BIOS</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.BiosVersion">
+          {{row.BiosVersion}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="BiosSerialNum">
+        <th class="BiosSerialNum" mat-header-cell *matHeaderCellDef>Серийный номер BIOS</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.BiosSerialNum">
+          {{row.BiosSerialNum}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="BiosReleaseDate">
+        <th class="BiosReleaseDate" mat-header-cell *matHeaderCellDef>Дата выпуска BIOS</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.BiosReleaseDate">
+          {{row.BiosReleaseDate}}
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="allModelDevice.disPlayColumnsMotherBoard; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: allModelDevice.disPlayColumnsMotherBoard;"></tr>
+    </table>
+
+    <label>{{allModelDevice.CpuLabel}}</label>
+    <table mat-table [dataSource]="allModelDevice.dataSourceCpu">
+
+      <ng-container matColumnDef="dev_name">
+        <th class="dev_name" mat-header-cell *matHeaderCellDef>Имя</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_name">
+          {{row.dev_name}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_descr">
+        <th class="dev_descr" mat-header-cell *matHeaderCellDef>Описание</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_descr">
+          {{row.dev_descr}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_manuf">
+        <th class="dev_manuf" mat-header-cell *matHeaderCellDef>Поставщик</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_manuf">
+          {{row.dev_manuf}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="CpuSpeed">
+        <th class="CpuSpeed" mat-header-cell *matHeaderCellDef>Частота</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.CpuSpeed">
+          {{row.CpuSpeed}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="CpuCores">
+        <th class="CpuCores" mat-header-cell *matHeaderCellDef>Ядра</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.CpuCores">
+          {{row.CpuCores}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="CpuThreads">
+        <th class="CpuThreads" mat-header-cell *matHeaderCellDef>Виртуальных ядер процессора</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.CpuThreads">
+          {{row.CpuThreads}}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="allModelDevice.disPlayColumnsCpu; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: allModelDevice.disPlayColumnsCpu;"></tr>
+    </table>
+
+    <label>{{allModelDevice.RamLabel}}</label>
+    <table mat-table [dataSource]="allModelDevice.dataSourceRam">
+
+      <ng-container matColumnDef="dev_name">
+        <th class="dev_name" mat-header-cell *matHeaderCellDef>Имя</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_name">
+          {{row.dev_name}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_descr">
+        <th class="dev_descr" mat-header-cell *matHeaderCellDef>Описание</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_descr">
+          {{row.dev_descr}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_manuf">
+        <th class="dev_manuf" mat-header-cell *matHeaderCellDef>Поставщик</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_manuf">
+          {{row.dev_manuf}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_xpar3">
+        <th class="dev_xpar3" mat-header-cell *matHeaderCellDef>Значение (МБ)</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_xpar3">
+          {{row.dev_xpar3}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_xpar2">
+        <th class="dev_xpar2" mat-header-cell *matHeaderCellDef>Тактовая частота</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_xpar2">
+          {{row.dev_xpar2}}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="allModelDevice.disPlayColumnsRam; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: allModelDevice.disPlayColumnsRam;"></tr>
+    </table>
+
+    <label>{{allModelDevice.StorageLabel}}</label>
+    <table mat-table [dataSource]="allModelDevice.dataSourceStorage">
+
+      <ng-container matColumnDef="dev_name">
+        <th class="dev_name" mat-header-cell *matHeaderCellDef>Имя</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_name">
+          {{row.dev_name}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_descr">
+        <th class="dev_descr" mat-header-cell *matHeaderCellDef>Описание</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_descr">
+          {{row.dev_descr}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_manuf">
+        <th class="dev_manuf" mat-header-cell *matHeaderCellDef>Поставщик</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_manuf">
+          {{row.dev_manuf}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_xpar2">
+        <th class="dev_xpar2" mat-header-cell *matHeaderCellDef>Объем</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_xpar2">
+          {{row.dev_xpar2}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_xpar3">
+        <th class="dev_xpar3" mat-header-cell *matHeaderCellDef>Свободно на диске</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_xpar3">
+          {{row.dev_xpar3}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="StorageRotationRate">
+        <th class="StorageRotationRate" mat-header-cell *matHeaderCellDef>Частота вращения</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.StorageRotationRate">
+          {{row.StorageRotationRate}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="SerialNum">
+        <th class="SerialNum" mat-header-cell *matHeaderCellDef>Серийный номер</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.SerialNum">
+          {{row.SerialNum}}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="allModelDevice.disPlayColumnsStorage; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: allModelDevice.disPlayColumnsStorage;"></tr>
+    </table>
+
+    <label>{{allModelDevice.VideoCardLabel}}</label>
+    <table mat-table [dataSource]="allModelDevice.dataSourceVideoCard">
+
+      <ng-container matColumnDef="dev_name">
+        <th class="dev_name" mat-header-cell *matHeaderCellDef>Имя</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_name">
+          {{row.dev_name}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_descr">
+        <th class="dev_descr" mat-header-cell *matHeaderCellDef>Описание</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_descr">
+          {{row.dev_descr}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_manuf">
+        <th class="dev_manuf" mat-header-cell *matHeaderCellDef>Поставщик</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_manuf">
+          {{row.dev_manuf}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="drv_ver">
+        <th class="drv_ver" mat-header-cell *matHeaderCellDef>Версия драйвера</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.drv_ver">
+          {{row.drv_ver}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="drv_prov">
+        <th class="drv_prov" mat-header-cell *matHeaderCellDef>Поставщик драйвера</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.drv_prov">
+          {{row.drv_prov}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="VideoCardMemorySize">
+        <th class="VideoCardMemorySize" mat-header-cell *matHeaderCellDef>Видеопамять</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.VideoCardMemorySize">
+          {{row.VideoCardMemorySize}}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="allModelDevice.disPlayColumnsVideoCard; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: allModelDevice.disPlayColumnsVideoCard;"></tr>
+    </table>
+
+    <label>{{allModelDevice.SoundCardLabel}}</label>
+    <table mat-table [dataSource]="allModelDevice.dataSourceSoundCard">
+
+      <ng-container matColumnDef="dev_name">
+        <th class="dev_name" mat-header-cell *matHeaderCellDef>Имя</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_name">
+          {{row.dev_name}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_descr">
+        <th class="dev_descr" mat-header-cell *matHeaderCellDef>Описание</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_descr">
+          {{row.dev_descr}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_manuf">
+        <th class="dev_manuf" mat-header-cell *matHeaderCellDef>Поставщик</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_manuf">
+          {{row.dev_manuf}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="drv_ver">
+        <th class="drv_ver" mat-header-cell *matHeaderCellDef>Версия драйвера</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.drv_ver">
+          {{row.drv_ver}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="drv_prov">
+        <th class="drv_prov" mat-header-cell *matHeaderCellDef>Поставщик драйвера</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.drv_prov">
+          {{row.drv_prov}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="SoundCardCodec">
+        <th class="SoundCardCodec" mat-header-cell *matHeaderCellDef>Кодек</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.SoundCardCodec">
+          {{row.SoundCardCodec}}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="allModelDevice.disPlayColumnsSoundCard; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: allModelDevice.disPlayColumnsSoundCard;"></tr>
+    </table>
+
+    <label>{{allModelDevice.NetworkAdapterLabel}}</label>
+    <table mat-table [dataSource]="allModelDevice.dataSourceNetworkAdapter">
+
+      <ng-container matColumnDef="dev_name">
+        <th class="dev_name" mat-header-cell *matHeaderCellDef>Имя</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_name">
+          {{row.dev_name}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_descr">
+        <th class="dev_descr" mat-header-cell *matHeaderCellDef>Описание</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_descr">
+          {{row.dev_descr}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_manuf">
+        <th class="dev_manuf" mat-header-cell *matHeaderCellDef>Поставщик</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_manuf">
+          {{row.dev_manuf}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_xpar1">
+        <th class="dev_xpar1" mat-header-cell *matHeaderCellDef>MAC-адрес</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_xpar1">
+          {{row.dev_xpar1}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_xpar2">
+        <th class="dev_xpar2" mat-header-cell *matHeaderCellDef>Скорость передачи (Мбит/сек)</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_xpar2">
+          {{row.dev_xpar2}}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="allModelDevice.disPlayColumnsNetworkAdapter; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: allModelDevice.disPlayColumnsNetworkAdapter;"></tr>
+    </table>
+
+    <label>{{allModelDevice.MonitorLabel}}</label>
+    <table mat-table [dataSource]="allModelDevice.dataSourceMonitor">
+
+      <ng-container matColumnDef="dev_name">
+        <th class="dev_name" mat-header-cell *matHeaderCellDef>Имя</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_name">
+          {{row.dev_name}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_descr">
+        <th class="dev_descr" mat-header-cell *matHeaderCellDef>Описание</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_descr">
+          {{row.dev_descr}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_manuf">
+        <th class="dev_manuf" mat-header-cell *matHeaderCellDef>Поставщик</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_manuf">
+          {{row.dev_manuf}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="drv_ver">
+        <th class="drv_ver" mat-header-cell *matHeaderCellDef>Версия драйвера</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.drv_ver">
+          {{row.drv_ver}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="drv_prov">
+        <th class="drv_prov" mat-header-cell *matHeaderCellDef>Поставщик драйвера</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.drv_prov">
+          {{row.drv_prov}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_xpar1">
+        <th class="dev_xpar1" mat-header-cell *matHeaderCellDef>Серийный номер</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_xpar1">
+          {{row.dev_xpar1}}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="allModelDevice.disPlayColumnsMonitor; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: allModelDevice.disPlayColumnsMonitor;"></tr>
+    </table>
+
+    <label>{{allModelDevice.OpticalDriverLabel}}</label>
+    <table mat-table [dataSource]="allModelDevice.dataSourceOpticalDriver">
+
+      <ng-container matColumnDef="dev_name">
+        <th class="dev_name" mat-header-cell *matHeaderCellDef>Имя</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_name">
+          {{row.dev_name}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_descr">
+        <th class="dev_descr" mat-header-cell *matHeaderCellDef>Описание</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_descr">
+          {{row.dev_descr}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dev_manuf">
+        <th class="dev_manuf" mat-header-cell *matHeaderCellDef>Поставщик</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.dev_manuf">
+          {{row.dev_manuf}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="drv_ver">
+        <th class="drv_ver" mat-header-cell *matHeaderCellDef>Версия драйвера</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.drv_ver">
+          {{row.drv_ver}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="drv_prov">
+        <th class="drv_prov" mat-header-cell *matHeaderCellDef>Поставщик драйвера</th>
+        <td mat-cell *matCellDef="let row" [matTooltip]="row.drv_prov">
+          {{row.drv_prov}}
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="allModelDevice.disPlayColumnsOpticalDriver; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: allModelDevice.disPlayColumnsOpticalDriver;"></tr>
+    </table>
+  </div>
+
+
+</div>
+
+
+
+
+<div [style.display]="isLoadForm ? 'inline':'none'">
+  <p class="text">Идет загрузка данных подождите пожалуйста!!!</p>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
